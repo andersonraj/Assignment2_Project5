@@ -26,7 +26,7 @@ int main() {
         std::string lastName, firstName;
 
         if (std::getline(ss, lastName, ',') && std::getline(ss, firstName)) {
-            // Trim leading space if present after the comma
+            // Trim leading whitespace if present
             if (!firstName.empty() && firstName[0] == ' ') {
                 firstName.erase(0, 1);
             }
@@ -39,5 +39,13 @@ int main() {
     }
 
     file.close();
-    return 0;
+
+#ifdef _DEBUG
+    std::cout << "--- DEBUG: Student Data ---" << std::endl;
+    for (const auto& student : students) {
+        std::cout << "Name: " << student.firstName << " " << student.lastName << std::endl;
+    }
+#endif
+
+    return 1;
 }
