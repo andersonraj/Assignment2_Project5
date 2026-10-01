@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+// Stores student record information
 struct STUDENT_DATA {
     std::string firstName;
     std::string lastName;
@@ -13,7 +14,7 @@ struct STUDENT_DATA {
 };
 
 int main() {
-    // 1. Print application mode (Standard vs Pre-Release)
+    // Display build mode
 #ifdef PRE_RELEASE
     std::cout << "Application is running Pre-Release source code." << std::endl;
 #else
@@ -22,7 +23,7 @@ int main() {
 
     std::vector<STUDENT_DATA> students;
 
-    // 2. Select file based on PRE_RELEASE directive
+    // Select input file based on build configuration
 #ifdef PRE_RELEASE
     std::ifstream file("StudentData_Emails.txt");
     std::string filename = "StudentData_Emails.txt";
@@ -37,6 +38,7 @@ int main() {
     }
 
     std::string line;
+    // Read and parse file line by line
     while (std::getline(file, line)) {
         if (line.empty()) continue;
 
@@ -45,12 +47,12 @@ int main() {
 
 #ifdef PRE_RELEASE
         std::string email;
-        // Format: LastName, FirstName, Email
+        // Parse format: LastName, FirstName, Email
         if (std::getline(ss, lastName, ',') &&
             std::getline(ss, firstName, ',') &&
             std::getline(ss, email)) {
 
-            // Trim leading space if present
+            // Remove leading whitespace
             if (!firstName.empty() && firstName[0] == ' ') {
                 firstName.erase(0, 1);
             }
@@ -65,8 +67,9 @@ int main() {
             students.push_back(student);
         }
 #else
-        // Format: LastName, FirstName
+        // Parse format: LastName, FirstName
         if (std::getline(ss, lastName, ',') && std::getline(ss, firstName)) {
+            // Remove leading whitespace
             if (!firstName.empty() && firstName[0] == ' ') {
                 firstName.erase(0, 1);
             }
@@ -81,7 +84,7 @@ int main() {
 
     file.close();
 
-    // 3. Debug output
+    // Print parsed data in debug mode only
 #ifdef _DEBUG
     std::cout << "--- DEBUG: Student Data ---" << std::endl;
     for (const auto& student : students) {
@@ -94,5 +97,5 @@ int main() {
     }
 #endif
 
-    return 1;
+    return 0;
 }
